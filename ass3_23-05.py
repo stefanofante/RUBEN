@@ -144,6 +144,9 @@ conf = (
         .setMaster("local[*]")
         .set("spark.driver.memory",   "8g")
         .set("spark.executor.memory", "8g")
+        # Default 1g aborts the compute stage at n>=500k because the
+        # collect of (d1,d2,h,cos) tuples grows with the candidate count.
+        .set("spark.driver.maxResultSize", "4g")
         # KryoSerializer is faster than the default Java serializer for
         # the kind of small Python objects we shuffle (band keys, pairs).
         .set("spark.serializer",

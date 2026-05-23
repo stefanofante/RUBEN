@@ -270,4 +270,29 @@ Risultato atteso per n=1000: 2 task invece di 128, collect in
 pochi secondi invece di 2.4 min. Sui run grandi (n=1M) si torna
 a saturare i core (parts = defaultParallelism).
 
+----------------------------------------------------------------
+10. spark.driver.maxResultSize alzato a 4g (ass3_23-05.py)
+----------------------------------------------------------------
+
+AGGIUNTO al blocco SparkConf:
+    spark.driver.maxResultSize = 4g     (default: 1g)
+
+MOTIVO: il preset "full" andava in errore a n=500000 con
+    SparkException: Total size of serialized results of 15 tasks
+    (1084.9 MiB) is bigger than spark.driver.maxResultSize (1024.0 MiB)
+e il driver moriva. L'InterruptedException nel task-result-getter
+e i messaggi "taskkill ... OPERAZIONE RIUSCITA" che si vedevano
+dopo erano solo il cleanup del SparkContext che si stava chiudendo,
+non la causa.
+La fase "compute" fa collect() di tuple (d1, d2, h, cos) e la sua
+dimensione cresce col numero di coppie candidate (non con n
+lineare). A n=500k già supera 1 GiB; con il limite a 4g abbiamo
+margine fino a n=1M. Avendo settato spark.driver.memory=8g, 4g
+di result-size sono safe (resta spazio per Spark stesso + Python).
+
+NOTA: se anche 4g non basta su n=1M, la soluzione strutturale è
+non fare collect() ma scrivere i risultati a disco partizionati
+(saveAsTextFile / write.parquet) e aggregare le statistiche con
+operazioni distribuite (reduce/agg) invece che in NumPy sul driver.
+
 
