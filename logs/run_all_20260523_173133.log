@@ -1,0 +1,20 @@
+[driver] worker script = C:\Devel\RUBEN\ass3_ruben.py
+======================================================================
+PRESET: sanity
+  n_values = 1000,10000
+  mem_opt  = true
+  suffix   = _sanity
+======================================================================
+  log file = C:\Devel\RUBEN\logs\ass3_ruben_sanity_20260523_173133.log
+
+[sanity] completed in 436.5 s
+
+======================================================================
+PRESET: medium_naive
+  n_values = 100000
+  mem_opt  = false
+  suffix   = _medium_naive
+======================================================================
+  log file = C:\Devel\RUBEN\logs\ass3_ruben_medium_naive_20260523_173133.log
+
+ERROR: preset 'medium_naive' failed with exit code 3221225786.

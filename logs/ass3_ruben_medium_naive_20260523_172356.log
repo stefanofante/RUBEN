@@ -1,0 +1,9 @@
+WARNING: Using incubator modules: jdk.incubator.vector
+Using Spark's default log4j profile: org/apache/spark/log4j2-defaults.properties
+Setting default log level to "WARN".
+To adjust logging level use sc.setLogLevel(newLevel). For SparkR, use setLogLevel(newLevel).
+[config] N_VALUES=[100000]
+[config] SUFFIX='_ass3_ruben_medium_naive'
+
+=== Running n=100000 ===
+

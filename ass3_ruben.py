@@ -26,9 +26,38 @@ conf = (SparkConf()
         .setMaster("local[*]")
         .setAppName("SimHash")
         .set("spark.python.worker.faulthandler.enabled", "true")
-        .set("spark.python.authenticate.socketTimeout", "300s"))
+        .set("spark.python.authenticate.socketTimeout", "300s")
+        # memory: default 1g/1g is too tight for n=1M (collect() of
+        # signatures dict and candidate-pair results saturates it).
+        .set("spark.driver.memory",        "8g")
+        .set("spark.executor.memory",      "8g")
+        # default 1g aborts the final collect at n>=500k with
+        # "Total size of serialized results bigger than maxResultSize".
+        .set("spark.driver.maxResultSize", "4g")
+        # Kryo: faster than Java serializer for small shuffled objects
+        # (band keys, candidate pairs).
+        .set("spark.serializer",
+             "org.apache.spark.serializer.KryoSerializer")
+        .set("spark.kryoserializer.buffer.max", "512m")
+        # On local[*] data is always local: don't wait for locality.
+        .set("spark.locality.wait", "0s")
+        # Reuse Python workers across tasks: avoids spawning a fresh
+        # worker for every short task (we have many).
+        .set("spark.python.worker.reuse", "true")
+        # Compress shuffle and spilled blocks: less disk I/O at the
+        # cost of a bit of CPU. Clear win on Windows (winutils + AV).
+        .set("spark.shuffle.compress",       "true")
+        .set("spark.shuffle.spill.compress", "true")
+        .set("spark.rdd.compress",           "true"))
 sc = SparkContext(conf=conf)
 sc.setLogLevel("ERROR")
+
+# Scale RDD partitions to dataset size: avoids the "128 tasks for 1000
+# elements" pathology where Python-worker overhead dominates the
+# computation. Target ~5000 elements/partition, capped between 2 and
+# the number of cores.
+def parts_for(n):
+    return max(2, min(sc.defaultParallelism, n // 5000 + 1))
 
 # ----------------------------------------------------------------
 # Env vars (set by run_all.py). Fall back to hard-coded defaults.
@@ -184,9 +213,10 @@ for n_test in N_VALUES:
 
   for m in m_values: 
     for b in b_values:
+        parts = parts_for(n)
         # ricalcola R e signatures solo per ogni (b,m)
         # RDD di indici -> RDD di (doc_id, firma)
-        indices_rdd    = sc.parallelize(range(n))
+        indices_rdd    = sc.parallelize(range(n), numSlices=parts)
         signatures_rdd = indices_rdd.map(lambda i: compute_simhash(i,m)).cache()
 
         #  BANDED APPROACH 
@@ -194,11 +224,11 @@ for n_test in N_VALUES:
         # crea b coppie per ogni documento
         bands_rdd = signatures_rdd.flatMap(lambda i: make_bands(i, b, r))
         # raggruppa per (band_index, band_bits)
-        grouped_rdd = bands_rdd.groupByKey()
+        grouped_rdd = bands_rdd.groupByKey(numPartitions=parts)
         # genera coppie candidate
         candidates_rdd = grouped_rdd.flatMap(get_candidate_pairs)
         # rimuovi duplicati
-        candidates_rdd = candidates_rdd.distinct()
+        candidates_rdd = candidates_rdd.distinct(numPartitions=parts)
 
         # broadcast dizionario firme per calcolo hamming
         signatures_dict    = dict(signatures_rdd.collect())

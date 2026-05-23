@@ -1,0 +1,150 @@
+WARNING: Using incubator modules: jdk.incubator.vector
+Using Spark's default log4j profile: org/apache/spark/log4j2-defaults.properties
+Setting default log level to "WARN".
+To adjust logging level use sc.setLogLevel(newLevel). For SparkR, use setLogLevel(newLevel).
+[config] N_VALUES=[100000]
+[config] SUFFIX='_ass3_ruben_medium_naive'
+
+=== Running n=100000 ===
+
+[Stage 0:>                                                        (0 + 21) / 21]
+
+[Stage 0:==>                                                      (1 + 20) / 21]
+
+                                                                                
+
+[Stage 1:>                                                        (0 + 21) / 21]
+
+[Stage 1:===========================================>             (16 + 5) / 21]
+
+[Stage 2:>                                                        (0 + 21) / 21]
+
+[Stage 2:=============================>                          (11 + 10) / 21]
+
+[Stage 2:======================================================>  (20 + 1) / 21]
+
+[Stage 3:>                                                        (0 + 21) / 21]
+
+[Stage 3:==>                                                      (1 + 20) / 21]
+
+[Stage 3:=====================>                                   (8 + 13) / 21]
+
+[Stage 3:========================================>                (15 + 6) / 21]
+
+[Stage 3:==============================================>          (17 + 4) / 21]
+
+[Stage 3:======================================================>  (20 + 1) / 21]
+
+[Stage 4:>                                                        (0 + 21) / 21]
+
+                                                                                
+
+[Stage 7:>                                                        (0 + 21) / 21]
+
+[Stage 7:======================================================>  (20 + 1) / 21]
+
+                                                                                
+
+[Stage 10:>                                                       (0 + 21) / 21]
+
+[Stage 10:=====================================================>  (20 + 1) / 21]
+
+                                                                                
+
+[Stage 13:>                                                       (0 + 21) / 21]
+
+[Stage 13:========================================>               (15 + 6) / 21]
+
+                                                                                
+
+[Stage 16:>                                                       (0 + 21) / 21]
+
+                                                                                
+
+[Stage 19:>                                                       (0 + 21) / 21]
+
+[Stage 19:=============>                                          (5 + 16) / 21]
+
+[Stage 20:>                                                       (0 + 21) / 21]
+
+                                                                                
+
+[Stage 23:>                                                       (0 + 21) / 21]
+
+                                                                                
+
+[Stage 26:>                                                       (0 + 21) / 21]
+
+[Stage 26:=====================================================>  (20 + 1) / 21]
+
+                                                                                
+
+[Stage 29:>                                                       (0 + 21) / 21]
+
+[Stage 29:==>                                                     (1 + 20) / 21]
+
+[Stage 29:=====================================>                  (14 + 7) / 21]
+
+[Stage 29:================================================>       (18 + 3) / 21]
+
+                                                                                
+
+[Stage 32:>                                                       (0 + 21) / 21]
+
+                                                                                
+
+[Stage 35:>                                                       (0 + 21) / 21]
+
+[Stage 35:========>                                               (3 + 18) / 21]
+
+[Stage 36:>                                                       (0 + 21) / 21]
+----------------------------------------
+Exception occurred during processing of request from ('127.0.0.1', 61991)
+ERROR:root:Exception while sending command.
+Traceback (most recent call last):
+  File "C:\Devel\RUBEN\.venv\Lib\site-packages\py4j\clientserver.py", line 535, in send_command
+    answer = smart_decode(self.stream.readline()[:-1])
+                          ~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\StefanoFante\AppData\Local\Programs\Python\Python314\Lib\socket.py", line 725, in readinto
+    return self._sock.recv_into(b)
+           ~~~~~~~~~~~~~~~~~~~~^^^
+ConnectionResetError: [WinError 10054] Connessione in corso interrotta forzatamente dall'host remoto
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Devel\RUBEN\.venv\Lib\site-packages\py4j\java_gateway.py", line 1038, in send_command
+    response = connection.send_command(command)
+  File "C:\Devel\RUBEN\.venv\Lib\site-packages\py4j\clientserver.py", line 566, in send_command
+    raise Py4JNetworkError(
+        "Error while sending or receiving", e, proto.ERROR_ON_RECEIVE)
+py4j.protocol.Py4JNetworkError: Error while sending or receiving
+Traceback (most recent call last):
+  File "C:\Users\StefanoFante\AppData\Local\Programs\Python\Python314\Lib\socketserver.py", line 318, in _handle_request_noblock
+    self.process_request(request, client_address)
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\StefanoFante\AppData\Local\Programs\Python\Python314\Lib\socketserver.py", line 349, in process_request
+    self.finish_request(request, client_address)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\StefanoFante\AppData\Local\Programs\Python\Python314\Lib\socketserver.py", line 362, in finish_request
+    self.RequestHandlerClass(request, client_address, self)
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\StefanoFante\AppData\Local\Programs\Python\Python314\Lib\socketserver.py", line 766, in __init__
+    self.handle()
+    ~~~~~~~~~~~^^
+  File "C:\Devel\RUBEN\.venv\Lib\site-packages\pyspark\accumulators.py", line 303, in handle
+    poll(accum_updates)
+    ~~~~^^^^^^^^^^^^^^^
+  File "C:\Devel\RUBEN\.venv\Lib\site-packages\pyspark\accumulators.py", line 272, in poll
+    if self.rfile in r and func():
+                           ~~~~^^
+  File "C:\Devel\RUBEN\.venv\Lib\site-packages\pyspark\accumulators.py", line 276, in accum_updates
+    num_updates = read_int(self.rfile)
+  File "C:\Devel\RUBEN\.venv\Lib\site-packages\pyspark\serializers.py", line 595, in read_int
+    length = stream.read(4)
+  File "C:\Users\StefanoFante\AppData\Local\Programs\Python\Python314\Lib\socket.py", line 725, in readinto
+    return self._sock.recv_into(b)
+           ~~~~~~~~~~~~~~~~~~~~^^^
+ConnectionResetError: [WinError 10054] Connessione in corso interrotta forzatamente dall'host remoto
+----------------------------------------
+^CTerminare il processo batch (S/N)? ^CTerminare il processo batch (S/N)? 
