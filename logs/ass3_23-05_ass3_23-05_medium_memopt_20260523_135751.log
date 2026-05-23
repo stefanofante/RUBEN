@@ -1,0 +1,19 @@
+13:57:51 [log] log file       = C:\Devel\RUBEN\logs\ass3_23-05_ass3_23-05_medium_memopt_20260523_135751.log
+13:57:51 [log] timings CSV    = C:\Devel\RUBEN\profile_timings_ass3_23-05_medium_memopt.csv
+13:57:51 [log] spark events   = C:\Devel\RUBEN\logs\spark-events
+13:57:57 [profile n=- b=-] spark_init=5.796s  defaultParallelism=32
+13:57:57 [profile n=- b=-] dataset_load=0.167s  shape=(1000000, 128)
+13:57:57 [config] USE_MEMORY_OPTIMIZATIONS=True
+13:57:57 [config] N_VALUES=[100000]
+13:57:57 [config] SUFFIX='_ass3_23-05_medium_memopt'
+13:57:57 === Running n=100000, m=64 ===
+13:57:57     parts=21 (~4761 elements/partition)
+13:58:26 [profile n=100000 b=-] broadcast_D=0.215s
+13:58:26 [profile n=100000 b=-] simhash=28.340s
+13:58:26 [profile n=100000 b=-] broadcast_sigs=0.022s
+14:00:39 [profile n=100000 b=4] banding_candidates=103.166s  pairs=17711582
+14:00:39 [profile n=100000 b=4] compute=30.081s  pairs=17711582
+14:03:00 [profile n=100000 b=8] banding_candidates=109.251s  pairs=23598857
+14:03:00 [profile n=100000 b=8] compute=31.347s  pairs=23598857
+14:03:01 [profile n=100000 b=-] total_n=303.591s
+14:03:01 [profile n=- b=-] script_total=309.921s

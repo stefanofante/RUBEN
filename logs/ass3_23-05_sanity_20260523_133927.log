@@ -1,0 +1,135 @@
+13:39:28 [log] log file       = C:\Devel\RUBEN\logs\ass3_23-05_ass3_23-05_sanity_20260523_133928.log
+13:39:28 [log] timings CSV    = C:\Devel\RUBEN\profile_timings_ass3_23-05_sanity.csv
+13:39:28 [log] spark events   = C:\Devel\RUBEN\logs\spark-events
+WARNING: Using incubator modules: jdk.incubator.vector
+Using Spark's default log4j profile: org/apache/spark/log4j2-defaults.properties
+Setting default log level to "WARN".
+To adjust logging level use sc.setLogLevel(newLevel). For SparkR, use setLogLevel(newLevel).
+13:39:34 [profile n=- b=-] spark_init=5.509s  defaultParallelism=32
+13:39:34 [profile n=- b=-] dataset_load=0.152s  shape=(1000000, 128)
+13:39:34 [config] USE_MEMORY_OPTIMIZATIONS=True
+13:39:34 [config] N_VALUES=[1000, 10000]
+13:39:34 [config] SUFFIX='_ass3_23-05_sanity'
+13:39:34 === Running n=1000, m=64 ===
+13:39:34     parts=2 (~500 elements/partition)
+
+[Stage 0:>                                                          (0 + 2) / 2]
+
+                                                                                
+13:39:38 [profile n=1000 b=-] broadcast_D=0.014s
+13:39:38 [profile n=1000 b=-] simhash=3.359s
+13:39:38 [profile n=1000 b=-] broadcast_sigs=0.005s
+
+[Stage 1:>                                                          (0 + 2) / 2]
+
+[Stage 2:>                                                          (0 + 2) / 2]
+
+[Stage 3:>                                                          (0 + 2) / 2]
+
+                                                                                
+
+[Stage 6:>                                                          (0 + 2) / 2]
+
+                                                                                
+13:39:53 [profile n=1000 b=4] banding_candidates=12.012s  pairs=8508
+13:39:53 [profile n=1000 b=4] compute=3.203s  pairs=8508
+
+[Stage 7:>                                                          (0 + 2) / 2]
+
+[Stage 8:>                                                          (0 + 2) / 2]
+
+[Stage 8:=============================>                             (1 + 1) / 2]
+
+[Stage 9:>                                                          (0 + 2) / 2]
+
+                                                                                
+
+[Stage 12:>                                                         (0 + 2) / 2]
+
+                                                                                
+13:40:08 [profile n=1000 b=8] banding_candidates=12.407s  pairs=133962
+13:40:08 [profile n=1000 b=8] compute=3.175s  pairs=133962
+13:40:08 [profile n=1000 b=-] total_n=34.185s
+13:40:08 === Running n=10000, m=64 ===
+13:40:08     parts=3 (~3333 elements/partition)
+
+[Stage 13:>                                                         (0 + 3) / 3]
+
+                                                                                
+13:40:13 [profile n=10000 b=-] broadcast_D=0.034s
+13:40:13 [profile n=10000 b=-] simhash=4.723s
+13:40:13 [profile n=10000 b=-] broadcast_sigs=0.007s
+
+[Stage 14:>                                                         (0 + 3) / 3]
+
+[Stage 15:>                                                         (0 + 3) / 3]
+
+[Stage 15:======================================>                   (2 + 1) / 3]
+
+[Stage 16:>                                                         (0 + 3) / 3]
+
+[Stage 16:===================>                                      (1 + 2) / 3]
+
+                                                                                
+
+[Stage 19:>                                                         (0 + 3) / 3]
+
+[Stage 19:======================================>                   (2 + 1) / 3]
+
+                                                                                
+13:40:36 [profile n=10000 b=4] banding_candidates=18.406s  pairs=549639
+13:40:36 [profile n=10000 b=4] compute=4.880s  pairs=549639
+
+[Stage 20:>                                                         (0 + 3) / 3]
+
+[Stage 21:>                                                         (0 + 3) / 3]
+
+[Stage 21:===================>                                      (1 + 2) / 3]
+
+[Stage 21:======================================>                   (2 + 1) / 3]
+
+[Stage 22:>                                                         (0 + 3) / 3]
+
+[Stage 22:===================>                                      (1 + 2) / 3]
+
+[Stage 22:======================================>                   (2 + 1) / 3]
+
+                                                                                
+
+[Stage 25:>                                                         (0 + 3) / 3]
+
+[Stage 25:===================>                                      (1 + 2) / 3]
+
+[Stage 25:======================================>                   (2 + 1) / 3]
+
+                                                                                
+13:41:10 [profile n=10000 b=8] banding_candidates=26.582s  pairs=4842328
+13:41:10 [profile n=10000 b=8] compute=7.071s  pairs=4842328
+13:41:10 [profile n=10000 b=-] total_n=61.808s
+        n  b   m  k  num_docs  time_sec  mean_cosine  cosine_hamming
+0    1000  4  64  0        12  0.801112     0.993197        1.000000
+1    1000  4  64  2       111  0.800912     0.974107        0.996689
+2    1000  4  64  4       324  0.800911     0.928975        0.987495
+3    1000  4  64  8       773  0.801021     0.828996        0.946347
+4    1000  8  64  0        12  0.794308     0.993197        1.000000
+5    1000  8  64  2       111  0.794113     0.974107        0.996689
+6    1000  8  64  4       334  0.793953     0.926288        0.987152
+7    1000  8  64  8       908  0.794146     0.816138        0.939285
+8   10000  4  64  0       242  1.223220     0.984003        1.000000
+9   10000  4  64  2      1752  1.221924     0.945472        0.996351
+10  10000  4  64  4      4555  1.221716     0.895690        0.985507
+11  10000  4  64  8      8804  1.228562     0.817357        0.945663
+12  10000  8  64  0       242  1.781013     0.984003        1.000000
+13  10000  8  64  2      1748  1.781045     0.946074        0.996361
+14  10000  8  64  4      4653  1.789405     0.896038        0.985278
+15  10000  8  64  8      9408  1.804404     0.810455        0.940594
+13:41:10 [profile n=- b=-] script_total=101.992s
+OPERAZIONE RIUSCITA: il processo con PID 20452 (processo figlio del
+
+PID 25568) Š stato terminato.
+OPERAZIONE RIUSCITA: il processo con PID 25568 (processo figlio del
+
+PID 24936) Š stato terminato.
+OPERAZIONE RIUSCITA: il processo con PID 24936 (processo figlio del
+
+PID 19356) Š stato terminato.

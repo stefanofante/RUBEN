@@ -1,0 +1,8 @@
+[driver] worker script = C:\Devel\RUBEN\ass3_23-05.py
+======================================================================
+PRESET: sanity
+  n_values = 1000,10000
+  mem_opt  = false
+  suffix   = _sanity
+======================================================================
+  log file = C:\Devel\RUBEN\logs\ass3_23-05_sanity_20260523_130236.log

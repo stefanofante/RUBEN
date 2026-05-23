@@ -1,0 +1,273 @@
+
+Obiettivo della sessione: far girare `run_all.py` su Windows con
+PySpark 4.1.2 nel venv `.venv`, e diagnosticare i tempi anomali del
+preset "sanity".
+
+----------------------------------------------------------------
+1. ass3_23-05.py
+----------------------------------------------------------------
+
+1.1 Path del dataset SIFT
+    PRIMA:  path assoluto hardcoded
+            r"C:\Users\StefanoFante\OneDrive - STLINE SRL\Desktop\RUBEN\sift\sift_base.fvecs"
+            (poi sostituito con il path di Ruben, ugualmente assoluto)
+    DOPO:   path relativo alla cartella dello script
+            os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                         "sift", "sift_base.fvecs")
+    MOTIVO: il dataset sta in c:\Devel\RUBEN\sift\, il path hardcoded
+            faceva FileNotFoundError. Il path relativo rende lo script
+            portabile a chiunque cloni la repo.
+
+1.2 Profiling per fase ([PROFILE])
+    AGGIUNTO: timer espliciti per
+              - broadcast_D
+              - simhash (collect)
+              - broadcast_sigs
+              - banding+candidates (con n_candidates)
+              - compute (Hamming+cosine + collect)
+    Le righe vengono stampate con flush=True così sono visibili
+    immediatamente nei log.
+    MOTIVO: il vecchio script misurava solo "compute+stats" e i tempi
+            per tutti i k di una stessa (b) erano identici al ms
+            (perché spalmati come t_compute/len(k_values)).
+            Servono i tempi reali per capire dove va il tempo nei
+            120 s anomali a n=1000.
+
+1.3 Configurazione Spark via SparkConf (sostituisce SparkContext("local[*]"))
+    AGGIUNTO blocco SparkConf con:
+        spark.driver.memory          = 8g
+        spark.executor.memory        = 8g
+        spark.serializer             = KryoSerializer
+        spark.kryoserializer.buffer.max = 512m
+        spark.locality.wait          = 0s
+        spark.python.worker.reuse    = true
+        spark.shuffle.compress       = true
+        spark.shuffle.spill.compress = true
+        spark.rdd.compress           = true
+    MOTIVO:
+      - memoria: default 1 GB/1 GB è troppo stretto per il run da 1M;
+        impostarla via SparkConf è più affidabile che PYSPARK_DRIVER_MEMORY
+        (env var ignorata quando la JVM è avviata da PySpark direttamente,
+        senza spark-submit).
+      - Kryo: più veloce per piccoli oggetti Python shufflati (band keys,
+        coppie di id).
+      - locality.wait=0s: su local[*] tutti i dati sono già locali, non ha
+        senso aspettare locality hints.
+      - python.worker.reuse: ricicla i worker Python fra task. Il workload
+        ha tantissimi task corti, evitare di rilanciare il worker ogni
+        volta è un grosso risparmio.
+      - shuffle/RDD compress: meno I/O su disco a costo di un po' di CPU.
+        Su Windows (winutils + antivirus) è sempre una vittoria netta.
+
+----------------------------------------------------------------
+2. install_winutils.ps1   [NUOVO]
+----------------------------------------------------------------
+
+Script che automatizza l'installazione di winutils.exe e hadoop.dll
+in C:\hadoop\bin e setta HADOOP_HOME + PATH (sessione + persistente
+a livello User).
+
+Funzionamento:
+  - rileva la versione di Hadoop dai jar di PySpark (regex su
+    hadoop-client-api-*.jar);
+  - sceglie il release più vicino disponibile nel repo
+    cdarlint/winutils (per noi: PySpark 4.1.2 -> Hadoop 3.4.2, ma
+    cdarlint arriva a 3.3.6, che è retrocompatibile e funziona);
+  - scarica winutils.exe + hadoop.dll;
+  - aggiorna HADOOP_HOME e PATH (sia sessione corrente sia User);
+  - smoke test con `winutils.exe ls`.
+
+MOTIVO: senza winutils Spark stampa:
+    WARN Shell: Did not find winutils.exe: HADOOP_HOME and
+    hadoop.home.dir are unset.
+  e su Windows va MOLTO lento (l'overhead per task piccoli esplode,
+  e Spark ricade su codepath fallback per FileSystem). Era il motivo
+  principale dei 480 s/banda osservati sul sanity con n=1000.
+
+----------------------------------------------------------------
+3. run_all.ps1   [NUOVO]
+----------------------------------------------------------------
+
+Launcher PowerShell per run_all.py. Setta HADOOP_HOME + PATH e poi
+lancia il Python del venv.
+
+Uso:
+    .\run_all.ps1            # worker default ("23" -> ass3_23-05.py)
+    .\run_all.ps1 23
+    .\run_all.ps1 ruben
+
+MOTIVO: HADOOP_HOME deve essere visibile alla JVM al momento dello
+start. Settarla via os.environ DENTRO lo script è meno affidabile
+perché alcuni codepath di Hadoop la leggono dall'env del processo
+padre (la JVM), non da quella settata da Python dopo l'avvio della
+JVM. Settarla nello shell prima del lancio è il modo sicuro.
+
+----------------------------------------------------------------
+4. run_ass.ps1   [NUOVO]
+----------------------------------------------------------------
+
+Launcher PowerShell per lanciare direttamente uno dei worker
+(ass3_23-05.py o ass3_ruben.py) con preset predefiniti o custom,
+senza passare per run_all.py.
+
+Preset disponibili:
+    sanity  -> N_VALUES = 1000,10000                       MEM_OPT=false
+    medium  -> N_VALUES = 10000,50000,100000               MEM_OPT=false
+    full    -> N_VALUES = 10000,50000,100000,500000,1000000 MEM_OPT=true
+
+Esempi:
+    .\run_ass.ps1                              # sanity su ass3_23-05.py
+    .\run_ass.ps1 -Preset medium
+    .\run_ass.ps1 -Preset full
+    .\run_ass.ps1 -Worker ruben -Preset sanity
+    .\run_ass.ps1 -NValues "1000,5000" -MemOpt false -Suffix "_quick"
+
+MOTIVO: durante il debug è scomodo lanciare TUTTI i preset
+(run_all.py li lancia in sequenza). Con questo launcher si itera
+velocemente solo sul sanity, mantenendo le stesse env var richieste
+dallo script (BENCH_N_VALUES, BENCH_MEM_OPT, BENCH_SUFFIX) e con
+HADOOP_HOME già settato.
+
+----------------------------------------------------------------
+5. Dipendenze
+----------------------------------------------------------------
+
+Installato `requirements.txt` nel venv `.venv` (Python 3.14):
+    pyspark==4.1.2
+    numpy==2.4.6
+    pandas==3.0.3
+    matplotlib==3.10.9
+    psutil==7.2.2
+
+MOTIVO: la prima esecuzione di run_all.py falliva con
+"ModuleNotFoundError: No module named 'numpy'" perché il `python`
+sul PATH del terminale non corrispondeva a quello del venv.
+Ora i launcher invocano direttamente `.venv\Scripts\python.exe`.
+
+==============================================================
+PROSSIMI PASSI CONSIGLIATI
+==============================================================
+
+1) Eseguire il sanity preset col nuovo setup:
+       .\run_ass.ps1 -Preset sanity
+   e leggere le righe [profile ...] per confermare che con winutils
+   attivo i tempi si abbassano (atteso: compute < 100 s per banda
+   su n=1000; ideale: < 30 s al secondo run "warm").
+
+2) Se i tempi sono buoni:
+       .\run_ass.ps1 -Preset medium
+   e poi
+       .\run_ass.ps1 -Preset full
+   (o `.\run_all.ps1` per la sequenza completa).
+
+3) Se i tempi restano alti, l'output [profile ...] indicherà quale
+   fase è il collo (broadcast / banding / compute) e potremo agire
+   in modo mirato (es. ridurre PARTS, escludere Defender dalle
+   cartelle Spark, ecc.).
+
+==============================================================
+MODIFICHE SUCCESSIVE
+==============================================================
+
+----------------------------------------------------------------
+6. Logging strutturato dei tempi (ass3_23-05.py)
+----------------------------------------------------------------
+
+AGGIUNTO: infrastruttura di logging completa per tracciare i tempi
+di tutte le fasi, non solo a video ma anche su file e CSV.
+
+Componenti:
+  - logger Python "bench" con FileHandler + StreamHandler:
+      file -> logs/ass3_23-05<SUFFIX>_<timestamp>.log
+      stdout -> live durante l'esecuzione
+      formato -> "HH:MM:SS [profile n=.. b=..] phase=Xs  extra"
+  - profile_timings<SUFFIX>.csv (una riga per fase):
+      colonne: timestamp, n, b, phase, seconds, extra
+      caricabile direttamente con pandas.read_csv per plottare.
+  - helper log_phase(n, b, phase, seconds, extra=""):
+      scrive contemporaneamente nel logger e nel CSV.
+  - Spark event log abilitato:
+      spark.eventLog.enabled = true
+      spark.eventLog.dir     = file:///c:/Devel/RUBEN/logs/spark-events
+      replayable con Spark History Server per breakdown per stage/task.
+
+Nuove fasi tracciate (oltre a quelle del punto 1.2):
+  - spark_init      (creazione SparkContext, con defaultParallelism)
+  - dataset_load    (load_fvecs, con shape)
+  - total_n         (somma per ciascun n)
+  - script_total    (durata totale dello script)
+
+MOTIVO: serviva un modo per misurare in modo riproducibile l'effetto
+di ogni modifica (winutils, SparkConf, aggregateByKey, ecc.) e per
+poter incrociare i dati a posteriori senza dover riparsare i log.
+Il CSV è il formato più semplice da consumare in pandas/Excel.
+
+----------------------------------------------------------------
+7. SparkConf: spark.sql.shuffle.partitions
+----------------------------------------------------------------
+
+AGGIUNTO al blocco SparkConf:
+    spark.sql.shuffle.partitions = (os.cpu_count() or 4) * 4
+
+MOTIVO: il default di Spark SQL è 200 partizioni, sovradimensionato
+per il nostro local[*]. Allinearlo a PARTS (defaultParallelism * 4)
+evita oversplit dei task shuffle anche nei rari momenti in cui si
+usa il path SQL/DataFrame interno (es. alcune operazioni di Spark
+su event log).
+
+----------------------------------------------------------------
+8. aggregateByKey con cap MAX_GROUP (ass3_23-05.py)
+----------------------------------------------------------------
+
+PRIMA: bands_rdd.groupByKey(numPartitions=PARTS)
+       seguito da get_candidate_pairs() che scartava i bucket con
+       più di 300 doc_id.
+
+DOPO:  MAX_GROUP = 300
+       bands_rdd.aggregateByKey([], _seq_op, _comb_op,
+                                numPartitions=PARTS)
+       dove _seq_op / _comb_op accumulano al massimo MAX_GROUP
+       doc_id per chiave. get_candidate_pairs continua a usare lo
+       stesso cap MAX_GROUP (ora costante condivisa).
+
+MOTIVO: groupByKey materializza l'intera lista di doc_id per ogni
+chiave prima di spedirla nel flatMap, quindi nei bucket "densi"
+(band collisioni casuali) viaggia nello shuffle una lista enorme
+che viene poi buttata via in get_candidate_pairs. Con aggregateByKey
+il taglio a MAX_GROUP avviene già nel combiner map-side, lo shuffle
+è bounded. Guadagno atteso: 1.3-2x in fase shuffle quando ci sono
+bucket grossi (più evidente con b alto o n alto).
+
+----------------------------------------------------------------
+9. Partizioni scalate alla dimensione del dataset (ass3_23-05.py)
+----------------------------------------------------------------
+
+PRIMA: PARTS = sc.defaultParallelism * 4   (es. 128, fisso per ogni n)
+
+DOPO:  _TARGET_PER_PART = 5000
+       def parts_for(n):
+           return max(2, min(sc.defaultParallelism, n // 5000 + 1))
+       # nel loop:
+       parts = parts_for(n)
+       sc.parallelize(..., numSlices=parts)
+       aggregateByKey(..., numPartitions=parts)
+       distinct(numPartitions=parts)
+
+Anche spark.sql.shuffle.partitions abbassato da
+(cpu_count * 4) a cpu_count, coerente con la nuova regola.
+
+MOTIVO: con n=1000 e PARTS=128, ogni task riceveva ~8 elementi e
+spendeva ~1.5 s di overhead Python-worker (avvio worker, Py4J,
+serializzazione lambda) per fare pochi ms di calcolo vero. Lo
+Spark UI mostrava collect() di 8 KB a 2.4 min e aggregateByKey a
+3.3 min con shuffle write di SOLI 244 KiB: classico caso di
+"troppe partizioni per troppi pochi dati".
+Regola pratica applicata:
+  - mai meno di 2 partizioni
+  - mai più di defaultParallelism (inutile creare più task dei core)
+  - puntare a ~5000 elementi/partizione
+Risultato atteso per n=1000: 2 task invece di 128, collect in
+pochi secondi invece di 2.4 min. Sui run grandi (n=1M) si torna
+a saturare i core (parts = defaultParallelism).
+
+

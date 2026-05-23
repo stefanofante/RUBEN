@@ -1,0 +1,12 @@
+13:26:05 [log] log file       = C:\Devel\RUBEN\logs\ass3_23-05_sanity_20260523_132605.log
+13:26:05 [log] timings CSV    = C:\Devel\RUBEN\profile_timings_sanity.csv
+13:26:05 [log] spark events   = C:\Devel\RUBEN\logs\spark-events
+13:26:12 [profile n=- b=-] spark_init=6.577s  defaultParallelism=32
+13:26:12 [profile n=- b=-] dataset_load=0.169s  shape=(1000000, 128)
+13:26:12 [config] USE_MEMORY_OPTIMIZATIONS=False
+13:26:12 [config] N_VALUES=[1000, 10000]
+13:26:12 [config] SUFFIX='_sanity'
+13:26:13 === Running n=1000, m=64 ===
+13:28:37 [profile n=1000 b=-] broadcast_D=0.013s
+13:28:37 [profile n=1000 b=-] simhash=143.907s
+13:28:37 [profile n=1000 b=-] broadcast_sigs=0.006s

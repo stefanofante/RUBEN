@@ -1,0 +1,6 @@
+timestamp,n,b,phase,seconds,extra
+2026-05-23T14:03:15,-,-,spark_init,5.755742,defaultParallelism=32
+2026-05-23T14:03:15,-,-,dataset_load,0.180521,"shape=(1000000, 128)"
+2026-05-23T14:03:20,10000,-,broadcast_D,0.040692,
+2026-05-23T14:03:20,10000,-,simhash,4.730049,
+2026-05-23T14:03:20,10000,-,broadcast_sigs,0.007044,

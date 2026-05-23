@@ -1,0 +1,29 @@
+13:39:28 [log] log file       = C:\Devel\RUBEN\logs\ass3_23-05_ass3_23-05_sanity_20260523_133928.log
+13:39:28 [log] timings CSV    = C:\Devel\RUBEN\profile_timings_ass3_23-05_sanity.csv
+13:39:28 [log] spark events   = C:\Devel\RUBEN\logs\spark-events
+13:39:34 [profile n=- b=-] spark_init=5.509s  defaultParallelism=32
+13:39:34 [profile n=- b=-] dataset_load=0.152s  shape=(1000000, 128)
+13:39:34 [config] USE_MEMORY_OPTIMIZATIONS=True
+13:39:34 [config] N_VALUES=[1000, 10000]
+13:39:34 [config] SUFFIX='_ass3_23-05_sanity'
+13:39:34 === Running n=1000, m=64 ===
+13:39:34     parts=2 (~500 elements/partition)
+13:39:38 [profile n=1000 b=-] broadcast_D=0.014s
+13:39:38 [profile n=1000 b=-] simhash=3.359s
+13:39:38 [profile n=1000 b=-] broadcast_sigs=0.005s
+13:39:53 [profile n=1000 b=4] banding_candidates=12.012s  pairs=8508
+13:39:53 [profile n=1000 b=4] compute=3.203s  pairs=8508
+13:40:08 [profile n=1000 b=8] banding_candidates=12.407s  pairs=133962
+13:40:08 [profile n=1000 b=8] compute=3.175s  pairs=133962
+13:40:08 [profile n=1000 b=-] total_n=34.185s
+13:40:08 === Running n=10000, m=64 ===
+13:40:08     parts=3 (~3333 elements/partition)
+13:40:13 [profile n=10000 b=-] broadcast_D=0.034s
+13:40:13 [profile n=10000 b=-] simhash=4.723s
+13:40:13 [profile n=10000 b=-] broadcast_sigs=0.007s
+13:40:36 [profile n=10000 b=4] banding_candidates=18.406s  pairs=549639
+13:40:36 [profile n=10000 b=4] compute=4.880s  pairs=549639
+13:41:10 [profile n=10000 b=8] banding_candidates=26.582s  pairs=4842328
+13:41:10 [profile n=10000 b=8] compute=7.071s  pairs=4842328
+13:41:10 [profile n=10000 b=-] total_n=61.808s
+13:41:10 [profile n=- b=-] script_total=101.992s
