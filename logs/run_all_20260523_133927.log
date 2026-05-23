@@ -26,3 +26,13 @@ PRESET: medium_memopt
   suffix   = _medium_memopt
 ======================================================================
   log file = C:\Devel\RUBEN\logs\ass3_23-05_medium_memopt_20260523_133927.log
+
+[medium_memopt] completed in 322.0 s
+
+======================================================================
+PRESET: full
+  n_values = 10000,50000,100000,500000,1000000
+  mem_opt  = true
+  suffix   = _full
+======================================================================
+  log file = C:\Devel\RUBEN\logs\ass3_23-05_full_20260523_133927.log

@@ -1,3 +1,43 @@
 14:03:09 [log] log file       = C:\Devel\RUBEN\logs\ass3_23-05_ass3_23-05_full_20260523_140309.log
 14:03:09 [log] timings CSV    = C:\Devel\RUBEN\profile_timings_ass3_23-05_full.csv
 14:03:09 [log] spark events   = C:\Devel\RUBEN\logs\spark-events
+14:03:15 [profile n=- b=-] spark_init=5.756s  defaultParallelism=32
+14:03:15 [profile n=- b=-] dataset_load=0.181s  shape=(1000000, 128)
+14:03:15 [config] USE_MEMORY_OPTIMIZATIONS=True
+14:03:15 [config] N_VALUES=[10000, 50000, 100000, 500000, 1000000]
+14:03:15 [config] SUFFIX='_ass3_23-05_full'
+14:03:16 === Running n=10000, m=64 ===
+14:03:16     parts=3 (~3333 elements/partition)
+14:03:20 [profile n=10000 b=-] broadcast_D=0.041s
+14:03:20 [profile n=10000 b=-] simhash=4.730s
+14:03:20 [profile n=10000 b=-] broadcast_sigs=0.007s
+14:03:43 [profile n=10000 b=4] banding_candidates=18.205s  pairs=549639
+14:03:43 [profile n=10000 b=4] compute=4.600s  pairs=549639
+14:04:17 [profile n=10000 b=8] banding_candidates=26.028s  pairs=4842328
+14:04:17 [profile n=10000 b=8] compute=7.349s  pairs=4842328
+14:04:17 [profile n=10000 b=-] total_n=61.065s
+14:04:17 === Running n=50000, m=64 ===
+14:04:17     parts=11 (~4545 elements/partition)
+14:04:33 [profile n=50000 b=-] broadcast_D=0.100s
+14:04:33 [profile n=50000 b=-] simhash=15.799s
+14:04:33 [profile n=50000 b=-] broadcast_sigs=0.021s
+14:06:02 [profile n=50000 b=4] banding_candidates=70.250s  pairs=7467371
+14:06:02 [profile n=50000 b=4] compute=18.651s  pairs=7467371
+14:07:44 [profile n=50000 b=8] banding_candidates=80.525s  pairs=17278241
+14:07:44 [profile n=50000 b=8] compute=21.674s  pairs=17278241
+14:07:44 [profile n=50000 b=-] total_n=207.530s
+14:07:44 === Running n=100000, m=64 ===
+14:07:44     parts=21 (~4761 elements/partition)
+14:08:15 [profile n=100000 b=-] broadcast_D=0.198s
+14:08:15 [profile n=100000 b=-] simhash=30.882s
+14:08:15 [profile n=100000 b=-] broadcast_sigs=0.020s
+14:11:11 [profile n=100000 b=4] banding_candidates=136.366s  pairs=17711582
+14:11:11 [profile n=100000 b=4] compute=39.512s  pairs=17711582
+14:13:35 [profile n=100000 b=8] banding_candidates=112.978s  pairs=23598857
+14:13:35 [profile n=100000 b=8] compute=30.462s  pairs=23598857
+14:13:36 [profile n=100000 b=-] total_n=351.388s
+14:13:36 === Running n=500000, m=64 ===
+14:13:36     parts=32 (~15625 elements/partition)
+14:14:13 [profile n=500000 b=-] broadcast_D=0.967s
+14:14:13 [profile n=500000 b=-] simhash=36.394s
+14:14:13 [profile n=500000 b=-] broadcast_sigs=0.066s
