@@ -36,3 +36,15 @@ PRESET: full
   suffix   = _full
 ======================================================================
   log file = C:\Devel\RUBEN\logs\ass3_23-05_full_20260523_133927.log
+
+ERROR: preset 'full' failed with exit code 1.
+Stopping the driver (fail-fast mode).
+======================================================================
+SUMMARY
+======================================================================
+  sanity         110.2 s   OK
+  medium_naive     988.7 s   OK
+  medium_memopt     322.0 s   OK
+  full          2562.0 s   FAILED
+  TOTAL         2562.0 s
+======================================================================

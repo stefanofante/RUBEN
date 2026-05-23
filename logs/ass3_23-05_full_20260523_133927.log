@@ -318,3 +318,230 @@ To adjust logging level use sc.setLogLevel(newLevel). For SparkR, use setLogLeve
 
 [Stage 41:=================================================>      (28 + 4) / 32]
 
+[Stage 41:==================================================>     (29 + 3) / 32]
+
+[Stage 41:====================================================>   (30 + 2) / 32]
+
+[Stage 41:======================================================> (31 + 1) / 32]
+
+[Stage 42:>                                                       (0 + 32) / 32]
+
+[Stage 42:>                                                       (0 + 32) / 32]
+
+[Stage 42:==========>                                             (6 + 26) / 32]
+
+[Stage 42:=================>                                     (10 + 22) / 32]
+
+[Stage 42:===========================>                           (16 + 16) / 32]
+
+[Stage 42:==============================>                        (18 + 14) / 32]
+
+[Stage 42:==================================>                    (20 + 12) / 32]
+
+[Stage 42:====================================>                  (21 + 11) / 32]
+
+[Stage 42:=====================================>                 (22 + 10) / 32]
+
+[Stage 42:========================================>               (23 + 9) / 32]
+
+[Stage 42:==========================================>             (24 + 8) / 32]
+
+[Stage 42:===========================================>            (25 + 7) / 32]
+
+[Stage 42:=============================================>          (26 + 6) / 32]
+
+[Stage 42:===============================================>        (27 + 5) / 32]
+
+[Stage 42:=================================================>      (28 + 4) / 32]
+
+[Stage 42:==================================================>     (29 + 3) / 32]
+
+[Stage 42:====================================================>   (30 + 2) / 32]
+
+[Stage 42:======================================================> (31 + 1) / 32]
+
+                                                                                
+
+[Stage 45:>                                                       (0 + 32) / 32]
+
+[Stage 45:>                                                       (0 + 32) / 32]
+
+[Stage 45:=>                                                      (1 + 31) / 32]
+
+[Stage 45:===>                                                    (2 + 30) / 32]
+
+[Stage 45:=====>                                                  (3 + 29) / 32]
+
+[Stage 45:=======>                                                (4 + 28) / 32]
+
+[Stage 45:========>                                               (5 + 27) / 32]
+
+[Stage 45:==========>                                             (6 + 26) / 32]
+
+[Stage 45:============>                                           (7 + 25) / 32]
+
+[Stage 45:==============>                                         (8 + 24) / 32]
+
+[Stage 45:===============>                                        (9 + 23) / 32]
+
+[Stage 45:=================>                                     (10 + 22) / 32]
+26/05/23 14:22:07 ERROR TaskSetManager: Total size of serialized results of 15 tasks (1084.9 MiB) is bigger than spark.driver.maxResultSize (1024.0 MiB)
+26/05/23 14:22:07 ERROR TaskSetManager: Total size of serialized results of 16 tasks (1157.3 MiB) is bigger than spark.driver.maxResultSize (1024.0 MiB)
+26/05/23 14:22:07 ERROR TaskSetManager: Total size of serialized results of 17 tasks (1229.6 MiB) is bigger than spark.driver.maxResultSize (1024.0 MiB)
+26/05/23 14:22:07 ERROR TaskSetManager: Total size of serialized results of 18 tasks (1301.9 MiB) is bigger than spark.driver.maxResultSize (1024.0 MiB)
+26/05/23 14:22:07 ERROR TaskSetManager: Total size of serialized results of 19 tasks (1374.2 MiB) is bigger than spark.driver.maxResultSize (1024.0 MiB)
+26/05/23 14:22:07 ERROR TaskSetManager: Total size of serialized results of 20 tasks (1446.5 MiB) is bigger than spark.driver.maxResultSize (1024.0 MiB)
+26/05/23 14:22:07 ERROR TaskSetManager: Total size of serialized results of 21 tasks (1518.9 MiB) is bigger than spark.driver.maxResultSize (1024.0 MiB)
+26/05/23 14:22:07 ERROR TaskSetManager: Total size of serialized results of 22 tasks (1591.2 MiB) is bigger than spark.driver.maxResultSize (1024.0 MiB)
+26/05/23 14:22:07 ERROR TaskSetManager: Total size of serialized results of 23 tasks (1663.5 MiB) is bigger than spark.driver.maxResultSize (1024.0 MiB)
+
+[Stage 45:==================>                                    (11 + 12) / 32]
+Traceback (most recent call last):
+  File "C:\Devel\RUBEN\ass3_23-05.py", line 564, in <module>
+    .collect()
+     ~~~~~~~^^
+  File "C:\Devel\RUBEN\.venv\Lib\site-packages\pyspark\core\rdd.py", line 1700, in collect
+    sock_info = self.ctx._jvm.PythonRDD.collectAndServe(self._jrdd.rdd())
+  File "C:\Devel\RUBEN\.venv\Lib\site-packages\py4j\java_gateway.py", line 1362, in __call__
+    return_value = get_return_value(
+        answer, self.gateway_client, self.target_id, self.name)
+  File "C:\Devel\RUBEN\.venv\Lib\site-packages\py4j\protocol.py", line 327, in get_return_value
+    raise Py4JJavaError(
+        "An error occurred while calling {0}{1}{2}.\n".
+        format(target_id, ".", name), value)
+py4j.protocol.Py4JJavaError: An error occurred while calling z:org.apache.spark.api.python.PythonRDD.collectAndServe.
+: org.apache.spark.SparkException: Job aborted due to stage failure: Total size of serialized results of 15 tasks (1084.9 MiB) is bigger than spark.driver.maxResultSize (1024.0 MiB)
+
+	at org.apache.spark.scheduler.DAGScheduler.$anonfun$abortStage$3(DAGScheduler.scala:3122)
+
+	at scala.Option.getOrElse(Option.scala:201)
+
+	at org.apache.spark.scheduler.DAGScheduler.$anonfun$abortStage$2(DAGScheduler.scala:3122)
+
+	at org.apache.spark.scheduler.DAGScheduler.$anonfun$abortStage$2$adapted(DAGScheduler.scala:3114)
+
+	at scala.collection.immutable.List.foreach(List.scala:323)
+
+	at org.apache.spark.scheduler.DAGScheduler.abortStage(DAGScheduler.scala:3114)
+
+	at org.apache.spark.scheduler.DAGScheduler.$anonfun$handleTaskSetFailed$1(DAGScheduler.scala:1303)
+
+	at org.apache.spark.scheduler.DAGScheduler.$anonfun$handleTaskSetFailed$1$adapted(DAGScheduler.scala:1303)
+
+	at scala.Option.foreach(Option.scala:437)
+
+	at org.apache.spark.scheduler.DAGScheduler.handleTaskSetFailed(DAGScheduler.scala:1303)
+
+	at org.apache.spark.scheduler.DAGSchedulerEventProcessLoop.doOnReceive(DAGScheduler.scala:3397)
+
+	at org.apache.spark.scheduler.DAGSchedulerEventProcessLoop.onReceive(DAGScheduler.scala:3328)
+
+	at org.apache.spark.scheduler.DAGSchedulerEventProcessLoop.onReceive(DAGScheduler.scala:3317)
+
+	at org.apache.spark.util.EventLoop$$anon$1.run(EventLoop.scala:50)
+
+	at org.apache.spark.scheduler.DAGScheduler.runJob(DAGScheduler.scala:1017)
+
+	at org.apache.spark.SparkContext.runJob(SparkContext.scala:2496)
+
+	at org.apache.spark.SparkContext.runJob(SparkContext.scala:2517)
+
+	at org.apache.spark.SparkContext.runJob(SparkContext.scala:2536)
+
+	at org.apache.spark.SparkContext.runJob(SparkContext.scala:2561)
+
+	at org.apache.spark.rdd.RDD.$anonfun$collect$1(RDD.scala:1057)
+
+	at org.apache.spark.rdd.RDDOperationScope$.withScope(RDDOperationScope.scala:151)
+
+	at org.apache.spark.rdd.RDDOperationScope$.withScope(RDDOperationScope.scala:112)
+
+	at org.apache.spark.rdd.RDD.withScope(RDD.scala:417)
+
+	at org.apache.spark.rdd.RDD.collect(RDD.scala:1056)
+
+	at org.apache.spark.api.python.PythonRDD$.collectAndServe(PythonRDD.scala:205)
+
+	at org.apache.spark.api.python.PythonRDD.collectAndServe(PythonRDD.scala)
+
+	at jdk.internal.reflect.GeneratedMethodAccessor64.invoke(Unknown Source)
+
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+
+	at java.base/java.lang.reflect.Method.invoke(Method.java:569)
+
+	at py4j.reflection.MethodInvoker.invoke(MethodInvoker.java:244)
+
+	at py4j.reflection.ReflectionEngine.invoke(ReflectionEngine.java:374)
+
+	at py4j.Gateway.invoke(Gateway.java:282)
+
+	at py4j.commands.AbstractCommand.invokeMethod(AbstractCommand.java:132)
+
+	at py4j.commands.CallCommand.execute(CallCommand.java:79)
+
+	at py4j.ClientServerConnection.waitForCommands(ClientServerConnection.java:184)
+
+	at py4j.ClientServerConnection.run(ClientServerConnection.java:108)
+
+	at java.base/java.lang.Thread.run(Thread.java:840)
+
+
+
+[Stage 45:===================>                                    (11 + 9) / 32]
+
+[Stage 45:===================>                                    (11 + 7) / 32]
+
+[Stage 45:=====================>                                  (12 + 6) / 32]
+
+[Stage 45:======================>                                 (13 + 5) / 32]
+26/05/23 14:22:09 ERROR Utils: Uncaught exception in thread task-result-getter-2
+java.lang.InterruptedException
+	at java.base/java.util.concurrent.locks.AbstractQueuedSynchronizer.acquireSharedInterruptibly(AbstractQueuedSynchronizer.java:1048)
+	at scala.concurrent.impl.Promise$DefaultPromise.tryAwait0(Promise.scala:253)
+	at scala.concurrent.impl.Promise$DefaultPromise.result(Promise.scala:271)
+	at org.apache.spark.util.SparkThreadUtils$.awaitResultNoSparkExceptionConversion(SparkThreadUtils.scala:61)
+	at org.apache.spark.util.SparkThreadUtils$.awaitResult(SparkThreadUtils.scala:45)
+	at org.apache.spark.util.ThreadUtils$.awaitResult(ThreadUtils.scala:359)
+	at org.apache.spark.network.BlockTransferService.fetchBlockSync(BlockTransferService.scala:103)
+	at org.apache.spark.storage.BlockManager.fetchRemoteManagedBuffer(BlockManager.scala:1208)
+	at org.apache.spark.storage.BlockManager.$anonfun$getRemoteBlock$8(BlockManager.scala:1152)
+	at scala.Option.orElse(Option.scala:477)
+	at org.apache.spark.storage.BlockManager.getRemoteBlock(BlockManager.scala:1152)
+	at org.apache.spark.storage.BlockManager.getRemoteBytes(BlockManager.scala:1295)
+	at org.apache.spark.scheduler.TaskResultGetter$$anon$3.$anonfun$run$1(TaskResultGetter.scala:89)
+	at scala.runtime.java8.JFunction0$mcV$sp.apply(JFunction0$mcV$sp.scala:18)
+	at org.apache.spark.util.Utils$.logUncaughtExceptions(Utils.scala:1941)
+	at org.apache.spark.scheduler.TaskResultGetter$$anon$3.run(TaskResultGetter.scala:64)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+Exception in thread "task-result-getter-2" java.lang.InterruptedException
+	at java.base/java.util.concurrent.locks.AbstractQueuedSynchronizer.acquireSharedInterruptibly(AbstractQueuedSynchronizer.java:1048)
+	at scala.concurrent.impl.Promise$DefaultPromise.tryAwait0(Promise.scala:253)
+	at scala.concurrent.impl.Promise$DefaultPromise.result(Promise.scala:271)
+	at org.apache.spark.util.SparkThreadUtils$.awaitResultNoSparkExceptionConversion(SparkThreadUtils.scala:61)
+	at org.apache.spark.util.SparkThreadUtils$.awaitResult(SparkThreadUtils.scala:45)
+	at org.apache.spark.util.ThreadUtils$.awaitResult(ThreadUtils.scala:359)
+	at org.apache.spark.network.BlockTransferService.fetchBlockSync(BlockTransferService.scala:103)
+	at org.apache.spark.storage.BlockManager.fetchRemoteManagedBuffer(BlockManager.scala:1208)
+	at org.apache.spark.storage.BlockManager.$anonfun$getRemoteBlock$8(BlockManager.scala:1152)
+	at scala.Option.orElse(Option.scala:477)
+	at org.apache.spark.storage.BlockManager.getRemoteBlock(BlockManager.scala:1152)
+	at org.apache.spark.storage.BlockManager.getRemoteBytes(BlockManager.scala:1295)
+	at org.apache.spark.scheduler.TaskResultGetter$$anon$3.$anonfun$run$1(TaskResultGetter.scala:89)
+	at scala.runtime.java8.JFunction0$mcV$sp.apply(JFunction0$mcV$sp.scala:18)
+	at org.apache.spark.util.Utils$.logUncaughtExceptions(Utils.scala:1941)
+	at org.apache.spark.scheduler.TaskResultGetter$$anon$3.run(TaskResultGetter.scala:64)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+OPERAZIONE RIUSCITA: il processo con PID 25888 (processo figlio del
+
+PID 22376) Š stato terminato.
+OPERAZIONE RIUSCITA: il processo con PID 22376 (processo figlio del
+
+PID 20956) Š stato terminato.
+OPERAZIONE RIUSCITA: il processo con PID 20956 (processo figlio del
+
+PID 23496) Š stato terminato.
